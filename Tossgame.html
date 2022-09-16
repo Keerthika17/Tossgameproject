@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        computer = []
+        player = []
+        round = 1
+        user = []
+        resultData = []
+        obj = { player: 0, computer: 0 }
+        function tossing() {
+            value = ["head", "tail"]
+            computerRandom = (value[Math.floor(Math.random() * 2)])
+            playerRandom = (value[Math.floor(Math.random() * 2)])
+            console.log("Toss:", toss + 1)
+            console.log("Computer:", computerRandom)
+            console.log("Player:",playerRandom)
+            computer.push(computerRandom)
+            player.push(playerRandom)
+            user.push({ Round: round - 1, Computer: computerRandom, Player:playerRandom, })
+
+            if (computerRandom == "head") {
+                obj.player += 1
+            }
+            else {
+                obj.computer += 1
+            }
+        }
+        // tossing()
+
+        function counting() {
+            computerHeadCount = computer.filter(n => n == "head").length
+            playerHeadCount = player.filter(n => n == "head").length
+            console.log("computerHeadCount", computerHeadCount)
+            console.log("playerHeadcount", playerHeadCount)
+        }
+        // counting()
+
+        function result() {
+            if (computerHeadCount > playerHeadCount) {
+                console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+                console.log(`computer is the winner `)
+            }
+            else if (computerHeadCount < playerHeadCount) {
+                console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+                console.log(`player is the winner`)
+            }
+            else {
+                console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+                console.log("match draw")
+            }
+        }
+        // result()
+        function tossFunction() {
+            toss = 0
+            r = setInterval(() => {
+                if (toss == 10) {
+                    clearInterval(r)
+                    counting()
+                    result()
+                    resultCalculation(obj.player, obj.computer)
+                    computer = []
+                    player = []
+                }
+                else {
+                    tossing()
+                    toss++
+                }
+
+            }, 1000)
+        }
+        function finalWinner() {
+            if (obj.player > obj.computer) {
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                console.log("player is the final winner")
+            } else if (obj.player == obj.computer) {
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                console.log("match draw")
+            } else {
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                console.log("computer is the final winner")
+            }
+        }
+
+
+        z = setInterval(function result() {
+
+            if (round == 5) {
+                clearInterval(z)
+                finalWinner()
+                console.table(obj);
+                console.table(user)
+                csvFileData()
+
+            } else {
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.....>>>>>>>>>>>>>>")
+                console.log(`Round:${round}`)
+                tossFunction()
+                round++
+                return result
+            }
+        }(), 15000);
+
+
+
+        function csvFileData() {
+            cs = ""
+            cs += "Round,player,Computer"
+            cs += "\r\n"
+            resultNo = 0
+            roundInterval = 10 - 1
+            for (i of user) {
+                cs += i.Round + ","
+                cs += i.Computer + ","
+                cs += i.Player + ","
+                cs += "\r\n"
+                if (user.indexOf(i) == roundInterval) {
+                    cs += " ===> " + resultData[resultNo]
+                    cs += "\r\n"
+                    resultNo++
+                    roundInterval = roundInterval + 10
+                    if (resultNo == 4) {
+                        cs += "!!!FINAL!!!!"
+                        cs += "\r\n"
+                        cs += resultData[resultNo - 1]
+                        cs += "\r\n"
+                    }
+                }
+            }
+            let tempBlob = new Blob([cs], { type: "text\csv" })
+
+            let tempURL = window.URL.createObjectURL(tempBlob)
+            let activation = document.createElement("a")
+            activation.href = tempURL
+
+            activation.download = "TossGame.csv"
+
+            activation.click()
+            window.URL.revokeObjectURL(tempURL)
+            activation.remove()
+        }
+        function resultCalculation(player, computer) {
+            diff = player - computer
+            if (diff > 0) {
+                resultData.push(`Player leads Computer by ${Math.abs(diff)} Heads`)
+            }
+            else if (diff == 0) {
+                resultData.push("Match Draw")
+            }
+            else {
+                resultData.push(`Computer leads Player by ${Math.abs(diff)} Heads`)
+            }
+        }
+    </script>
+</body>
+
+</html>
