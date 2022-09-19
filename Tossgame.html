@@ -22,18 +22,18 @@
             playerRandom = (value[Math.floor(Math.random() * 2)])
             console.log("Toss:", toss + 1)
             console.log("Computer:", computerRandom)
-            console.log("Player:",playerRandom)
+            console.log("Player:", playerRandom)
             computer.push(computerRandom)
             player.push(playerRandom)
-            user.push({ Round: round - 1, Computer: computerRandom, Player:playerRandom, })
+            user.push({ Round: round - 1, Computer: computerRandom, Player: playerRandom, })
 
-            if (computerRandom == "head") {
+            if (playerRandom == "head") {
                 obj.player += 1
             }
-            else {
+            if (computerRandom == "head")
                 obj.computer += 1
-            }
         }
+
         // tossing()
 
         function counting() {
@@ -45,17 +45,18 @@
         // counting()
 
         function result() {
+            calculateDifference = computerHeadCount - playerHeadCount
             if (computerHeadCount > playerHeadCount) {
                 console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-                console.log(`computer is the winner `)
+                console.log(`computer leads player by ${Math.abs(calculateDifference)} heads`)
             }
             else if (computerHeadCount < playerHeadCount) {
                 console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-                console.log(`player is the winner`)
+                console.log(`player leads computer by ${Math.abs(calculateDifference)} heads`)
             }
             else {
                 console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-                console.log("match draw")
+                console.log("Both of them  got equal number of heads")
             }
         }
         // result()
