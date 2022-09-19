@@ -15,11 +15,12 @@
         round = 1
         user = []
         resultData = []
-        obj = { player: 0, computer: 0 }
-        function tossing() {
-            value = ["head", "tail"]
-            computerRandom = (value[Math.floor(Math.random() * 2)])
-            playerRandom = (value[Math.floor(Math.random() * 2)])
+        finalObject = { player: 0, computer: 0 }
+
+        function randomTossing() {
+            coin = ["head", "tail"]
+            computerRandom = (coin[Math.floor(Math.random() * 2)])
+            playerRandom = (coin[Math.floor(Math.random() * 2)])
             console.log("Toss:", toss + 1)
             console.log("Computer:", computerRandom)
             console.log("Player:", playerRandom)
@@ -28,13 +29,13 @@
             user.push({ Round: round - 1, Computer: computerRandom, Player: playerRandom, })
 
             if (playerRandom == "head") {
-                obj.player += 1
+                finalObject.player += 1
             }
             if (computerRandom == "head")
-                obj.computer += 1
+                finalObject.computer += 1
         }
 
-        // tossing()
+        // randomTossing()
 
         function counting() {
             computerHeadCount = computer.filter(n => n == "head").length
@@ -44,7 +45,7 @@
         }
         // counting()
 
-        function result() {
+        function everyRoundResult() {
             calculateDifference = computerHeadCount - playerHeadCount
             if (computerHeadCount > playerHeadCount) {
                 console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
@@ -59,32 +60,33 @@
                 console.log("Both of them  got equal number of heads")
             }
         }
-        // result()
-        function tossFunction() {
+        // everyRoundResult()
+        function tossTimeCountingFunction() {
             toss = 0
             r = setInterval(() => {
                 if (toss == 10) {
                     clearInterval(r)
                     counting()
-                    result()
-                    resultCalculation(obj.player, obj.computer)
+                    everyRoundResult()
+                    resultCalculation(finalObject.player, finalObject.computer)
                     computer = []
                     player = []
                 }
                 else {
-                    tossing()
+                    randomTossing()
                     toss++
                 }
 
             }, 1000)
         }
+        
         function finalWinner() {
-            if (obj.player > obj.computer) {
+            if (finalObject.player > finalObject.computer) {
                 console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
                 console.log("player is the final winner")
-            } else if (obj.player == obj.computer) {
+            } else if (finalObject.player == finalObject.computer) {
                 console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-                console.log("match draw")
+                console.log("Match draw")
             } else {
                 console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
                 console.log("computer is the final winner")
@@ -92,21 +94,21 @@
         }
 
 
-        z = setInterval(function result() {
+        z = setInterval(function everyRoundResult() {
 
             if (round == 5) {
                 clearInterval(z)
                 finalWinner()
-                console.table(obj);
+                console.table(finalObject);
                 console.table(user)
                 csvFileData()
 
             } else {
                 console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.....>>>>>>>>>>>>>>")
                 console.log(`Round:${round}`)
-                tossFunction()
+                tossTimeCountingFunction()
                 round++
-                return result
+                return everyRoundResult
             }
         }(), 15000);
 
